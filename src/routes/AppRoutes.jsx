@@ -1,19 +1,32 @@
-// routes/AppRoutes.jsx
+import { Routes, Route } from "react-router-dom";
 
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import AdminRoutes from "./AdminRoutes";
+import LoginPage from "../pages/auth/LoginPage";
 
-export default function AppRoutes() {
+import AdminDashboard from "../pages/admin/AdminDashboard";
+import ManagerDashboard from "../pages/manager/ManagerDashboard";
+import TechnicianDashboard from "../pages/technician/TechnicianDashboard";
+import EmployeeDashboard from "../pages/employee/EmployeeDashboard";
+
+import NotFoundPage from "../pages/NotFoundPage";
+
+function AppRoutes() {
   return (
-      <Routes>
-        {/* Redirect root to admin */}
-        <Route path="/" element={<Navigate to="/admin" />} />
+    <Routes>
 
-        {/* Admin Routes */}
-        <Route path="/admin/*" element={<AdminRoutes />} />
+      <Route path="/" element={<LoginPage />} />
 
-        {/* 404 Page */}
-        <Route path="*" element={<h1>404 Not Found</h1>} />
-      </Routes>
+      <Route path="/admin" element={<AdminDashboard />} />
+
+      <Route path="/manager" element={<ManagerDashboard />} />
+
+      <Route path="/technician" element={<TechnicianDashboard />} />
+
+      <Route path="/employee" element={<EmployeeDashboard />} />
+
+      <Route path="*" element={<NotFoundPage />} />
+
+    </Routes>
   );
 }
+
+export default AppRoutes;

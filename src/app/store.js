@@ -1,12 +1,14 @@
-// app/store.js
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "../features/auth/authSlice";
+import userReducer from "../features/users/userSlice";
+import assetReducer from "../features/assets/assetSlice";
+import reportReducer from "../features/reports/reportSlice";
 
-import { createStore, applyMiddleware } from "redux";
-import { thunk } from "redux-thunk";
-import rootReducer from "./rootReducer";
-
-const store = createStore(
-  rootReducer,
-  applyMiddleware(thunk)
-);
-
-export default store;
+export const store = configureStore({
+  reducer: {
+    auth: authReducer,
+    users: userReducer,
+    assets: assetReducer,
+    reports: reportReducer
+  }
+});
