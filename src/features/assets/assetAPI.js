@@ -1,18 +1,39 @@
-import axios from "axios";
+import api from "../../app/axiosInstance";
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+const createAsset = async (assetData) => {
+  const response = await api.post("/assets", assetData);
+  return response.data;
+};
 
 const getAssets = async () => {
-  const response = await axios.get(`${BASE_URL}/assets`);
+  const response = await api.get("/assets");
+  return response.data;
+};
+
+const getAssetsByUserId = async (userId) => {
+  const response = await api.get(`/allocations/user/${userId}`);
   return response.data;
 };
 
 const getAssetById = async (id) => {
-  const response = await axios.get(`${BASE_URL}/assets/${id}`);
+  const response = await api.get(`/assets/${id}`);
   return response.data;
 };
 
+const updateAsset = async ({ id, assetData }) => {
+  const response = await api.put(`/assets/${id}`, assetData);
+  return response.data;
+};
+
+const deleteAsset = async (id) => {
+  await api.delete(`/assets/${id}`);
+};
+
 export default {
+  createAsset,
   getAssets,
-  getAssetById
+  getAssetsByUserId,
+  getAssetById,
+  updateAsset,
+  deleteAsset
 };

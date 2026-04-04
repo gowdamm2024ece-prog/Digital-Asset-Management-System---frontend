@@ -1,26 +1,15 @@
-// routes/AdminRoutes.jsx
-
-import { Routes, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import AdminDashboard from "../pages/admin/AdminDashboard";
+import ProtectedRoute from "../components/ProtectedRoute";
 
-import UserListPage from "../pages/admin/users/UserListPage";
-import CreateUserPage from "../pages/admin/users/CreateUserPage";
-import EditUserPage from "../pages/admin/users/EditUserPage";
-import CreateAssetPage from "../pages/admin/assets/CreateAssetPage";
-import AssetListPage from "../pages/admin/assets/AssetListPage";
-import EditAssetPage from "../pages/admin/assets/EditAssetPage";
-
-export default function AdminRoutes() {
+function AdminRoutes() {
   return (
-    <Routes>
-      <Route path="/" element={<AdminDashboard />}>
-        <Route path="users" element={<UserListPage />} />
-        <Route path="users/create" element={<CreateUserPage />} />
-        <Route path="users/edit/:id" element={<EditUserPage />} />
-        <Route path="assets" element={<AssetListPage />} />
-        <Route path="assets/add" element={<CreateAssetPage />} />
-        <Route path="assets/edit/:id" element={<EditAssetPage />} />
-      </Route>
-    </Routes>
+    <Route path="/admin" element={
+      <ProtectedRoute allowedRoles={["ADMIN"]}>
+        <AdminDashboard />
+      </ProtectedRoute>
+    } />
   );
 }
+
+export default AdminRoutes;

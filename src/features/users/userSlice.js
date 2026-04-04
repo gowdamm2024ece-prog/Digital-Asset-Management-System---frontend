@@ -93,7 +93,8 @@ const userSlice = createSlice({
       })
 
       .addCase(createUser.fulfilled, (state, action) => {
-        state.users.push(action.payload);
+        // After register, re-fetch users to get the new user
+        state.loading = false;
       })
 
       .addCase(updateUser.fulfilled, (state, action) => {

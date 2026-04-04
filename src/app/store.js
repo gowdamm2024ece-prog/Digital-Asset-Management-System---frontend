@@ -3,12 +3,14 @@ import authReducer from "../features/auth/authSlice";
 import userReducer from "../features/users/userSlice";
 import assetReducer from "../features/assets/assetSlice";
 import reportReducer from "../features/reports/reportSlice";
+import workorderReducer from "../features/workorders/workorderSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     users: userReducer,
     assets: assetReducer,
-    reports: reportReducer
+    reports: reportReducer,
+    workorders: workorderReducer
   }
 });

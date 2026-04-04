@@ -1,30 +1,27 @@
-import axios from "axios";
-
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+import api from "../../app/axiosInstance";
 
 const createUser = async (userData) => {
-  const response = await axios.post(`${BASE_URL}/users`, userData);
+  const response = await api.post("/auth/register", userData);
   return response.data;
 };
 
 const getUsers = async () => {
-  const response = await axios.get(`${BASE_URL}/users`);
+  const response = await api.get("/users");
   return response.data;
 };
 
 const getUserById = async (id) => {
-  const response = await axios.get(`${BASE_URL}/users/${id}`);
+  const response = await api.get(`/users/${id}`);
   return response.data;
 };
 
 const updateUser = async ({ id, userData }) => {
-  const response = await axios.patch(`${BASE_URL}/users/${id}`, userData);
+  const response = await api.put(`/users/${id}`, userData);
   return response.data;
 };
 
 const deleteUser = async (id) => {
-  const response = await axios.delete(`${BASE_URL}/users/${id}`);
-  return response.data;
+  await api.delete(`/users/${id}`);
 };
 
 export default {

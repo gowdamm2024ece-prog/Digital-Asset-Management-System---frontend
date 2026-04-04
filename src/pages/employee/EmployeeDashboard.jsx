@@ -1,60 +1,41 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { fetchAssets } from '../../features/assets/assetSlice';
-import { fetchReports } from '../../features/reports/reportSlice';
-import { selectAssets } from '../../features/assets/assetSelectors';
-import { selectReports } from '../../features/reports/reportSelectors';
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAuthUser } from "../../features/auth/authSelectors";
+import { logout } from "../../features/auth/authSlice";
 
 const EmployeeDashboard = () => {
+  const location = useLocation();
   const dispatch = useDispatch();
-  const assets = useSelector(selectAssets);
-  const reports = useSelector(selectReports);
+  const navigate = useNavigate();
+  const user = useSelector(selectAuthUser);
 
-  useEffect(() => {
-    dispatch(fetchAssets());
-    dispatch(fetchReports());
-  }, [dispatch]);
+  const isActive = (path) => location.pathname.includes(path);
 
-  const stats = [
-    { label: 'Total Assets', value: assets.length, icon: '📦', color: 'bg-blue-100' },
-    { label: 'Active Reports', value: reports.filter(r => r.status === 'pending').length, icon: '📊', color: 'bg-yellow-100' },
-    { label: 'Resolved', value: reports.filter(r => r.status === 'resolved').length, icon: '✅', color: 'bg-green-100' },
-  ];
+  const handleLogout = () => { dispatch(logout()); navigate("/"); };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Employee Dashboard</h1>
-      
-      <div className="grid grid-cols-3 gap-4 mb-8">
-        {stats.map((stat, i) => (
-          <div key={i} className={`${stat.color} p-4 rounded-lg shadow`}>
-            <span className="text-2xl mb-2 block">{stat.icon}</span>
-            <p className="text-sm text-gray-600">{stat.label}</p>
-            <p className="text-2xl font-bold">{stat.value}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="grid grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow p-4">
-          <h2 className="font-semibold mb-3">Recent Assets</h2>
-          {assets.slice(0, 3).map(asset => (
-            <Link key={asset.id} to={`/employee/asset/${asset.id}`} className="block p-2 hover:bg-gray-50">
-              {asset.name} - <span className="text-sm text-gray-600">{asset.status}</span>
-            </Link>
-          ))}
-        </div>
-
-        <div className="bg-white rounded-lg shadow p-4">
-          <h2 className="font-semibold mb-3">Recent Reports</h2>
-          {reports.slice(0, 3).map(report => (
-            <div key={report.id} className="p-2 border-b last:border-0">
-              <p className="font-medium">{report.title}</p>
-              <p className="text-sm text-gray-600">{report.status}</p>
+    <div className="min-h-screen bg-gray-100">
+      <nav className="bg-white shadow-lg">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex justify-between items-center py-4">
+            <h2 className="text-2xl font-bold text-gray-800">Employee Dashboard</h2>
+            <div className="flex items-center gap-4">
+              <span className="text-gray-600">Welcome, {user?.username}</span>
+              <button onClick={handleLogout} className="text-red-600 hover:text-red-800 font-medium">Logout</button>
             </div>
-          ))}
+          </div>
+          <div className="flex gap-3 pb-4">
+            {[["my-assets", "My Assets"], ["create-report", "Create Report"], ["my-reports", "My Reports"]].map(([path, label]) => (
+              <Link key={path} to={path}
+                className={`px-4 py-2 rounded-lg transition ${isActive(path) ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}>
+                {label}
+              </Link>
+            ))}
+          </div>
         </div>
+      </nav>
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        <Outlet />
       </div>
     </div>
   );
